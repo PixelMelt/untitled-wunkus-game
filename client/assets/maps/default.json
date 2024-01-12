@@ -1,0 +1,48 @@
+{
+    "name": "default",
+    "width": 8,
+    "height": 4,
+
+    "player": {
+        "x": 3,
+        "y": 3
+    },
+
+    "tiles": [
+        {
+            "name": "fence2",
+            "x": 0,
+            "y": 0
+        },
+        {
+            "name": "fence1",
+            "x": 1,
+            "y": 0
+        },
+        {
+            "name": "fence1",
+            "x": 2,
+            "y": 0
+        },
+        {
+            "name": "fence3",
+            "x": 3,
+            "y": 0
+        },
+        {
+            "name": "grass1",
+            "x": 0,
+            "y": 1
+        },
+        {
+            "name": "grass1",
+            "x": 3,
+            "y": 2
+        },
+        {
+            "name": "rock1",
+            "x": 1,
+            "y": 2
+        }
+    ]
+}
