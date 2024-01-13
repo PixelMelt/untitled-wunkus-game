@@ -19,6 +19,7 @@ class gameController {
 
         this.playerKeyInput = [];
 
+        this.mapChangeTimeout = 0;
 
         // initialize the game
         this.init();
@@ -26,7 +27,7 @@ class gameController {
     
     init = async function() {
         this.createPlayer();
-        await this.loadMap(`default`);
+        await this.loadMap(`default`, true);
         this.detectInput();
 
         // start the game loop
@@ -76,6 +77,12 @@ class gameController {
             case `ArrowRight`:
                 this.map.accelx -= this.player.sprite.acceleration;
                 break;
+            case `1`:
+                this.loadMap(`default`);
+                break;
+            case `2`:
+                this.loadMap(`one`);
+                break;
         }
     }
 
@@ -85,18 +92,88 @@ class gameController {
     }
 
 
-    async loadMap(mapName) {
+    async loadMap(mapName, firstLoad = false) {
+        if(this.mapChangeTimeout + 1000 > Date.now()){
+            return;
+        }
+        this.mapChangeTimeout = Date.now();
+
+        // remove the old map
+        let oldmapexists = false;
+        let oldmap = this.map;
+        if(this.map){
+            oldmapexists = true;
+        }
+
         // load the map json file
         let mapjson = await fetch(`./assets/maps/${mapName}.json`)
         .then(response => response.json());
 
         // create a new background object using the json data
         this.map = new Background(mapjson, this.mainGameFrame, this, false);
-        // add the background to the background container
-        this.background.addChild(this.map.mapContainer);
+        
+        // execute the wipe effect
+        this.wipe = new wipeEffect(this.mainGameFrame, firstLoad);
+        this.foreground.addChild(this.wipe.wipe);
+
+        console.log(`load map`);
+
+        if(!firstLoad){
+            setTimeout(() => {
+                if(oldmapexists){
+                    console.log(`remove old map`);
+                    this.background.removeChild(oldmap.mapContainer);
+                }
+                this.background.addChild(this.map.mapContainer);
+            }, 700);
+        } else {
+            this.background.addChild(this.map.mapContainer);
+        }
+
     }
     
 }
+
+// makes a white rectangle that eases across the screen, completely covering the screen for a wipe effect
+class wipeEffect {
+    constructor(mainGameFrame, coverScreenStart = false) {
+        this.wipe = new PIXI.Graphics();
+        this.wipe.beginFill(0xFFFFFF);
+        this.wipe.drawRect(0, 0, 100, 100);
+        this.wipe.endFill();
+        this.wipe.width = mainGameFrame.screen.width * 2;
+        this.wipe.height = mainGameFrame.screen.height;
+
+        if(coverScreenStart){
+            console.log(`cover screen`);
+            this.wipe.x = 0;
+        }else{
+            this.wipe.x = (-mainGameFrame.screen.width * 2);
+        }
+
+        this.wipe.y = 0;
+        this.init();
+    }
+
+    tick() {
+        // ease the wipe across the screen
+        this.wipe.x += 20;
+        
+        if(this.wipe.x > this.wipe.width){
+            console.log(`wipe done`);
+            this.ticker.stop();
+            this.wipe.destroy();
+        }
+    }
+
+    init() {
+        // tick the wipe effect until it is off the screen
+        this.ticker = new PIXI.Ticker();
+        this.ticker.add(delta => this.tick(delta));
+        this.ticker.start();
+    }
+}
+
 
 // the background class will be in charge of creating the background tiles, it will store the map data in json format
 class Background {
