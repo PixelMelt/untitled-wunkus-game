@@ -1,48 +1,84 @@
 {
     "name": "default",
-    "width": 8,
+    "width": 15,
     "height": 4,
 
     "player": {
-        "x": 3,
+        "x": 2,
         "y": 3
     },
 
     "tiles": [
         {
-            "name": "fence2",
+            "name": "fence_left",
+            "boilFrames": 0,
             "x": 0,
-            "y": 0
+            "y": 0,
+            "collidable": true,
+            "type": "art"
         },
         {
-            "name": "fence1",
+            "name": "fence_middle",
+            "boilFrames": 0,
             "x": 1,
-            "y": 0
+            "y": 0,
+            "collidable": true,
+            "type": "art"
         },
         {
-            "name": "fence1",
+            "name": "fence_middle",
+            "boilFrames": 0,
             "x": 2,
-            "y": 0
+            "y": 0,
+            "collidable": true,
+            "type": "art"
         },
         {
-            "name": "fence3",
+            "name": "fence_right",
+            "boilFrames": 0,
             "x": 3,
-            "y": 0
+            "y": 0,
+            "collidable": true,
+            "type": "art"
         },
         {
-            "name": "grass1",
+            "name": "grass",
+            "boilFrames": 0,
             "x": 0,
-            "y": 1
+            "y": 1,
+            "collidable": false,
+            "type": "art"
         },
         {
-            "name": "grass1",
+            "name": "grass",
+            "boilFrames": 0,
             "x": 3,
-            "y": 2
+            "y": 2,
+            "collidable": false,
+            "type": "art"
         },
         {
-            "name": "rock1",
-            "x": 1,
-            "y": 2
+            "name": "sign",
+            "boilFrames": 1,
+            "x": 6,
+            "y": 1,
+            "collidable": true,
+            "type": "art"
+        },
+        {
+            "name": "oldie",
+            "boilFrames": 1,
+            "x": 10,
+            "y": 1,
+            "type": "npc",
+            "collidable": true,
+            "interactRange": 2,
+            "dialog": [
+                "Hello traverlerer",
+                "I ate half a pair of socks yestredy",
+                "wair thats just one",
+                "kill your shelf NOW"
+            ]
         }
     ]
 }
